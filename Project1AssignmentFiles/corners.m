@@ -33,18 +33,23 @@ IxIy = Ix .* Iy;
 IyIy = Iy .* Iy;
 
 %b
+gausFilt = [1 4 1;
+             4 7 4;
+             1 4 1].*(1/27);
 boxfilt = ones(N); % NxN kernel of all 1 s
-Sx2 = imfilter(IxIx, boxfilt, 'same');
-Sxy = imfilter(IxIy, boxfilt, "same");
-Sy2 = imfilter(IyIy, boxfilt, "same");
+Sx2 = conv2(IxIx, boxfilt);
+Sxy = conv2(IxIy, boxfilt);
+Sy2 = conv2(IyIy, boxfilt);
 
 %c
-R = ((Sx2 .* Sy2) - (Sxy.^2)) - 0.05*((Sx2 + Sy2).^2);
+R = (Sx2 .* Sy2) - (Sxy.^2) - 0.05*(Sx2 + Sy2).^2;
 
 % step 6: "M" best corner features
-corners = imregionalmax(R);
-SE = strel('disk', D);
-corners = corners & (R == imdilate(R, SE));
+thresh = 0.009;
+max = ordfilt2(R, D, true(D));
+bordermask = zeros(size(R));
+bordermask(D+1:end-D, D+1:end-D) = 1;
+corners = (R==max)  & bordermask;
 [y_corners, x_corners] = find(corners);
 [~, sorted_indices] = sort(R(corners), 'descend');
 top_M_corners_x = x_corners(sorted_indices(1:M));
