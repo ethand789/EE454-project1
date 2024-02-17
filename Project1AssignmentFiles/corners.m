@@ -21,4 +21,22 @@ imagesc(Ix);
 filty = filtx';
 Iy = conv2(I_smooth, filty);
 imagesc(Iy);
+
+% step 5: Compute Harris corner “R” score values
+%a
+IxIx = Ix .* Ix;
+IxIy = Ix .* Iy;
+IyIy = Iy .* Iy;
+
+%b
+boxfilt = ones(N); % NxN kernel of all 1 s
+Sx2 = imfilter(IxIx, boxfilt, 'same');
+Sxy = imfilter(IxIy, boxfilt, "same");
+Sy2 = imfilter(IyIy, boxfilt, "same");
+
+%c
+R = (Sx2 .* Sy2) - (Sxy.^2) - 0.05*(Sx2 + Sy2).^2;
+
+
+
 end
