@@ -15,15 +15,15 @@ I_smooth = conv2(I,gaus);
 
 % step 4: computing gradients Ix and Iy
 filtx = [-1 -2 -1;
-              0 0 0;
-              1 2 1]* 0.25;
+          0 0 0;
+          1 2 1]* 0.25;
 Ix = conv2(I_smooth, filtx);
 imagesc(Ix);
 colormap("gray");
 
 filty = [-1 0 1;
-            -2 0 2;
-            -1 0 1]* 0.25;
+         -2 0 2;
+         -1 0 1]* 0.25;
 Iy = conv2(I_smooth, filty);
 
 % step 5: Compute Harris corner “R” score values

@@ -7,8 +7,8 @@
 %the full pathname to the file. 
 %./checkerboard.jpg
 %./stickfiguredance.jpg
-%./psulion.jpg
-./psutd.jpg
+./psulion.jpg
+%./psutd.jpg
 %
 %Second parameter, floating point number containing standard deviation of
 %the Gaussian smoothing kernel to apply to the image
